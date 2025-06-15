@@ -1,0 +1,27 @@
+<div class="home-layout">
+  <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+    <i
+      [ngClass]="menuOpen ? 'fas fa-times fc-blue' : 'fas fa-bars fc-blue'"
+    ></i>
+  </button>
+
+  <app-header [class.open]="menuOpen" (close)="menuOpen = false"></app-header>
+
+  <div class="main-content-area" [class.menu-opened]="menuOpen">
+    <main id="hero" class="main-content">
+      <div class="hero">
+        <h1>Nitesh Kaushik</h1>
+        <p class="typing-container">
+          I am a &nbsp;
+          <span class="typing-text"></span>
+          <span class="cursor">|</span>
+        </p>
+      </div>
+    </main>
+    <section id="about"><app-about></app-about></section>
+    <section id="skills"><app-skills></app-skills></section>
+    <section id="resume"><app-resume></app-resume></section>
+    <section id="projects"><app-projects></app-projects></section>
+    <section id="contact"><app-contact></app-contact></section>
+  </div>
+</div>

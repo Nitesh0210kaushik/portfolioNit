@@ -1,0 +1,60 @@
+.skills {
+  background: #f9f9f9;
+  padding: 20px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.section-title p {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+.progress {
+  margin-bottom: 25px;
+}
+
+.skill {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #222;
+}
+
+.progress-bar-wrap {
+  width: 100%;
+  height: 18px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  border-radius: 10px 0 0 10px;
+  transition: width 1.5s ease-in-out;
+}
+
+/* Responsive for smaller devices */
+@media (max-width: 767px) {
+  .skills .row {
+    flex-direction: column;
+  }
+
+  .col-lg-6 {
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+}

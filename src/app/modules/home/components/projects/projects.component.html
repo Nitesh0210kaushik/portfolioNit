@@ -1,0 +1,24 @@
+<div class="resume">
+  <div class="about-section">
+    <h2>Projects</h2>
+  </div>
+
+  <div class="project-card" *ngFor="let project of projects">
+    <h2>{{ project.name }}</h2>
+    <p class="description">{{ project.description }}</p>
+
+    <div class="tech-stack">
+      <span *ngFor="let tech of project.techStack">{{ tech }}</span>
+    </div>
+
+    <div class="features">
+      <div class="feature-card" *ngFor="let feature of project.features">
+        <div class="icon">{{ feature.icon }}</div>
+        <div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<aside class="sidebar">
+  <div class="profile">
+    <img
+      src="../../../../../assets/images/picc.jpg"
+      alt="Nitesh Kaushik"
+      class="profile-img"
+    />
+    <h2>Nitesh Kaushik</h2>
+    <div class="social-icons" (click)="closeMenu()">
+      <i
+        class="fas fa-times"
+        (click)="openSocial('x')"
+        aria-label="Close menu"
+      ></i>
+      <i class="fab fa-facebook-f" (click)="openSocial('facebook')"></i>
+      <i class="fab fa-instagram" (click)="openSocial('instagram')"></i>
+      <i class="fab fa-linkedin-in" (click)="openSocial('linkedin')"></i>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <a (click)="scrollToSection('hero')"><i class="fas fa-home"></i> Home</a>
+    <a (click)="scrollToSection('about')"><i class="fas fa-user"></i> About</a>
+    <a (click)="scrollToSection('skills')"
+      ><i class="fas fa-tools"></i> Skills</a
+    >
+    <a (click)="scrollToSection('projects')">
+      <i class="fas fa-tasks"></i> Projects
+    </a>
+
+    <a (click)="scrollToSection('resume')"
+      ><i class="fas fa-file"></i> Resume</a
+    >
+
+    <a (click)="scrollToSection('contact')"
+      ><i class="fas fa-envelope"></i> Contact</a
+    >
+  </nav>
+</aside>

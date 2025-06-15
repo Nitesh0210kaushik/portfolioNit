@@ -1,0 +1,62 @@
+<div class="contact-container">
+  <div class="about-section">
+    <h2>Contact</h2>
+  </div>
+
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <div class="info-box">
+        <h4>Address 📍</h4>
+        <p>Rosera, Samastipur, Bihar</p>
+      </div>
+      <div class="info-box">
+        <h4>Call Us 📞</h4>
+        <p><a href="tel:+916203716045">+91 6203716045</a></p>
+      </div>
+
+      <div class="info-box">
+        <h4>Email Us ✉️</h4>
+        <p>
+          <a href="mailto:nitesh2kaushik@gmail.com"
+            >nitesh2kaushik&#64;gmail.com</a
+          >
+        </p>
+      </div>
+    </div>
+    <div class="contact-form">
+      <form
+        *ngIf="!isSubmitted"
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="form-group-row">
+          <input type="text" placeholder="Your Name" formControlName="name" />
+          <input
+            type="email"
+            placeholder="Your Email"
+            formControlName="email"
+          />
+        </div>
+        <input
+          type="text"
+          placeholder="Subject"
+          class="full-width"
+          formControlName="subject"
+        />
+        <textarea
+          rows="6"
+          placeholder="Message"
+          class="full-width"
+          formControlName="message"
+        ></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+      <div class="thank-you-message" *ngIf="isSubmitted">
+        <img src="../../../../../assets/images/Confirmed.png" alt="Confirmed" />
+        <h3>Thank you!</h3>
+        <p>Your message was submitted successfully.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+.sidebar {
+  width: 250px;
+  background-color: #0f1b2b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding-top: 25px;
+  overflow-y: scroll;
+  height: 100vh;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: auto;
+}
+
+.profile h2 {
+  margin-top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.social-icons i {
+  background: #1f2d3d;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  gap: 15px;
+}
+
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  transition: 0.3s ease;
+}
+
+.nav-menu a:hover {
+  background-color: #1c2a3a;
+}
