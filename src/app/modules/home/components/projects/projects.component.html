@@ -4,7 +4,21 @@
   </div>
 
   <div class="project-card" *ngFor="let project of projects">
-    <h2>{{ project.name }}</h2>
+    <!-- <h2>{{ project.name }}</h2> -->
+    <h2>
+      <a
+        *ngIf="project.link; else plainName"
+        [href]="project.link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ project.name }}
+      </a>
+      <ng-template #plainName>
+        {{ project.name }}
+      </ng-template>
+    </h2>
+
     <p class="description">{{ project.description }}</p>
 
     <div class="tech-stack">

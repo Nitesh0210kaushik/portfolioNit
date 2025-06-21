@@ -17,6 +17,14 @@
   font-family: "Segoe UI", sans-serif;
   //   margin: 10px;
 }
+a {
+  color: #007bff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 .about-section h2 {
   border-left: 4px solid #2196f3;

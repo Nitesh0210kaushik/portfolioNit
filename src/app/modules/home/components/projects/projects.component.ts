@@ -9,6 +9,7 @@ export class ProjectsComponent {
   projects = [
     {
       name: 'MenewConnect — Restaurant POS & Admin Portal',
+      link: 'https://hub-staging.menew.in/?rid=5fce26e7e1d68a177425b007',
       description:
         'Built a comprehensive restaurant management system for order processing, billing, and admin control.',
       techStack: [
@@ -68,6 +69,7 @@ export class ProjectsComponent {
     },
     {
       name: 'E web — E-Commerce Website',
+      link: 'https://transcendent-klepon-0a22e6.netlify.app/',
       description:
         'A fully functional E-Commerce website built using the MERN stack. The platform supports cart management, user authentication, and admin features with a modern and responsive UI.',
       techStack: [
