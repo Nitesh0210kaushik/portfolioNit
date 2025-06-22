@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HomeService } from '../../services/home.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contact',
@@ -8,8 +10,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ContactComponent implements OnInit {
   contactForm!: FormGroup;
+  isSubmitted = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private toast: ToastrService,
+    private homeService: HomeService
+  ) {}
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({
@@ -20,15 +27,27 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  isSubmitted = false;
-
   onSubmit() {
     if (this.contactForm.valid) {
-      this.isSubmitted = true;
+      // this.isSubmitted = true;
+      this.homeService.contactMe(this.contactForm.value).subscribe(
+        (response: any) => {
+          console.log('Contact form submitted:', response);
+          this.toast.success('Contact Submitted Successfully');
 
-      setTimeout(() => {
-        this.contactForm.reset();
-      }, 500);
+          this.contactForm.reset();
+          this.isSubmitted = true;
+        },
+        (error) => {
+          console.error('Error submitting form:', error);
+
+          const errorMsg =
+            error?.error?.errors?.message?.message || error?.error?.message;
+
+          this.toast.error(errorMsg || 'Something went wrong');
+          this.isSubmitted = false;
+        }
+      );
     }
   }
 }
