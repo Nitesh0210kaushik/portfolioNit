@@ -137,4 +137,42 @@ button {
   border-radius: 20px;
   cursor: pointer;
   transition: background 0.3s;
+  position: relative;
+  min-width: 160px;
+  height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+.loading-btn span {
+  visibility: hidden;
+}
+
+.loading-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #42a5f5, #00bcd4, #42a5f5);
+  animation: loading-btn-animation 1.5s infinite;
+  width: 0%; /* starts from 0 */
+  border-radius: 20px;
+  z-index: 1;
+}
+
+@keyframes loading-btn-animation {
+  0% {
+    width: 0%;
+    left: 0;
+  }
+  50% {
+    width: 100%;
+    left: 0;
+  }
+  100% {
+    width: 0%;
+    left: 100%;
+  }
 }

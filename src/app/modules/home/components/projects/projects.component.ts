@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class ProjectsComponent {
   projects = [
     {
-      name: 'MenewConnect — Restaurant POS & Admin Portal',
+      name: 'MenewConnect — Restaurant POS & Admin Portal (Software Products)',
       link: 'https://hub-staging.menew.in/?rid=5fce26e7e1d68a177425b007',
       description:
         'Built a comprehensive restaurant management system for order processing, billing, and admin control.',

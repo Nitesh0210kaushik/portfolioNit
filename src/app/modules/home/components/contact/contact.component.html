@@ -49,7 +49,20 @@
           class="full-width"
           formControlName="message"
         ></textarea>
-        <button type="submit">Send Message</button>
+        <!-- <button
+          type="submit"
+          [disabled]="contactForm.invalid || isLoading"
+          [ngClass]="{ 'loading-btn': isLoading }"
+        >
+          Send Message
+        </button> -->
+        <button
+          type="submit"
+          [disabled]="contactForm.invalid || isLoading"
+          [ngClass]="{ 'loading-btn': isLoading }"
+        >
+          <span>Send Message</span>
+        </button>
       </form>
 
       <div class="thank-you-message" *ngIf="isSubmitted">
