@@ -4,7 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'], // fixed typo: should be "styleUrls"
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
   menuOpen = false;
@@ -13,7 +13,12 @@ export class HomeComponent {
     this.menuOpen = !this.menuOpen;
   }
 
-  words = ['MEAN Stack Developer', 'Freelancer', 'Tech Enthusiast'];
+  words = [
+    'MEAN Stack Developer',
+    'MERN stack Developer',
+    'Freelancer',
+    'Tech Enthusiast',
+  ];
   currentWordIndex = 0;
   currentCharIndex = 0;
   isDeleting = false;

@@ -24,11 +24,9 @@
       </div>
     </div>
     <div class="contact-form">
-      <form
-        *ngIf="!isSubmitted"
-        [formGroup]="contactForm"
-        (ngSubmit)="onSubmit()"
-      >
+      <!-- (ngSubmit)="onSubmit()" -->
+      <!--   -->
+      <form *ngIf="!isSubmitted" [formGroup]="contactForm">
         <div class="form-group-row">
           <input type="text" placeholder="Your Name" formControlName="name" />
           <input
@@ -49,20 +47,21 @@
           class="full-width"
           formControlName="message"
         ></textarea>
+        <button
+          type="submit"
+          (click)="onSubmit()"
+          [disabled]="contactForm.invalid || isLoading"
+        >
+          Send Message
+        </button>
+        <!-- [ngClass]="{ 'loading-btn': isLoading }" -->
         <!-- <button
           type="submit"
           [disabled]="contactForm.invalid || isLoading"
           [ngClass]="{ 'loading-btn': isLoading }"
         >
-          Send Message
-        </button> -->
-        <button
-          type="submit"
-          [disabled]="contactForm.invalid || isLoading"
-          [ngClass]="{ 'loading-btn': isLoading }"
-        >
           <span>Send Message</span>
-        </button>
+        </button> -->
       </form>
 
       <div class="thank-you-message" *ngIf="isSubmitted">

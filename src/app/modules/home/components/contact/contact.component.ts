@@ -32,23 +32,24 @@ export class ContactComponent implements OnInit {
     if (this.contactForm.valid) {
       this.isLoading = true;
 
-      this.homeService.contactMe(this.contactForm.value).subscribe(
-        (response: any) => {
-          console.log('Contact form submitted:', response);
-          this.toast.success('Contact Submitted Successfully');
-          this.contactForm.reset();
-          this.isSubmitted = true;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.error('Error submitting form:', error);
-          const errorMsg =
-            error?.error?.errors?.message?.message || error?.error?.message;
-          this.toast.error(errorMsg);
-          this.isSubmitted = false;
-          this.isLoading = false;
-        }
-      );
+      this.isSubmitted = true;
+      // this.homeService.contactMe(this.contactForm.value).subscribe(
+      //   (response: any) => {
+      //     console.log('Contact form submitted:', response);
+      //     this.toast.success('Contact Submitted Successfully');
+      //     this.contactForm.reset();
+      //     this.isSubmitted = true;
+      //     this.isLoading = false;
+      //   }
+      //   // (error) => {
+      //   //   console.error('Error submitting form:', error);
+      //   //   const errorMsg =
+      //   //     error?.error?.errors?.message?.message || error?.error?.message;
+      //   //   this.toast.error(errorMsg);
+      //   //   this.isSubmitted = false;
+      //   //   this.isLoading = false;
+      //   // }
+      // );
     }
   }
 }
