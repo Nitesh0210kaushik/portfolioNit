@@ -1,0 +1,683 @@
+.int-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+}
+
+/* ---------- Integration hub ---------- */
+.hub-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.hub {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+
+  // soft glow behind the core
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 18%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.28), rgba(34, 211, 238, 0.08) 50%, transparent 70%);
+    filter: blur(20px);
+  }
+}
+
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+
+  &.orbit-1 {
+    inset: 11%;
+    animation: spin 60s linear infinite;
+  }
+
+  &.orbit-2 {
+    inset: 28%;
+    border-style: solid;
+    border-color: rgba(124, 92, 255, 0.16);
+    animation: spin 40s linear infinite reverse;
+  }
+}
+
+.wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wire {
+  stroke: color-mix(in srgb, var(--c) 22%, transparent);
+  stroke-width: 0.35;
+}
+
+.wire-flow {
+  stroke: var(--c);
+  stroke-width: 0.45;
+  stroke-dasharray: 1.4 4;
+  stroke-linecap: round;
+  opacity: 0.75;
+  animation: dash 2.2s linear infinite;
+}
+
+.packet {
+  fill: var(--c);
+  filter: drop-shadow(0 0 1.6px var(--c));
+}
+
+.core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.16), transparent 60%),
+    linear-gradient(140deg, #2a1f63, #0d3a4a);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 8px rgba(124, 92, 255, 0.08), 0 20px 60px -10px rgba(124, 92, 255, 0.7);
+  z-index: 2;
+
+  b {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #dfe3f3;
+  }
+}
+
+.core-logos {
+  display: flex;
+  gap: 8px;
+  color: #fff;
+}
+
+.core-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  animation: ping 2.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.node {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  animation: bob 5s ease-in-out infinite;
+}
+
+.node-tile {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, var(--bg-2));
+  border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+  box-shadow: 0 10px 30px -12px var(--c);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.node:hover .node-tile {
+  transform: scale(1.12);
+  box-shadow: 0 14px 36px -8px var(--c);
+}
+
+// Opaque pill so the wire running to the node never cuts through the text.
+.node-label {
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--muted);
+  white-space: nowrap;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+}
+
+/* Cycling "live automation" line under the hub */
+.flows {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 460px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.84rem;
+}
+
+.flow-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--success);
+  background: rgba(52, 211, 153, 0.1);
+
+  i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+}
+
+.flow-track {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 1.4em;
+}
+
+.flow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--muted);
+  opacity: 0;
+  animation: flow-cycle 12s infinite;
+
+  i {
+    font-size: 0.7rem;
+    color: var(--accent-2);
+  }
+
+  b {
+    color: var(--text);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* ---------- Capability cards ---------- */
+.caps {
+  display: grid;
+  gap: 18px;
+}
+
+.cap {
+  --a: var(--accent);
+  display: flex;
+  gap: 18px;
+  padding: 24px;
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin: 6px 0 14px;
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+}
+
+.cap-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  color: var(--a);
+  background: color-mix(in srgb, var(--a) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--a) 35%, transparent);
+}
+
+.cap-body {
+  min-width: 0;
+}
+
+/* ---------- Blockchain ---------- */
+.chain-card {
+  --glow: rgba(140, 156, 255, 0.9);
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 40px;
+  align-items: center;
+  padding: 40px;
+  overflow: hidden;
+
+  // faint hex-grid wash on the visual side
+  background:
+    radial-gradient(40rem 20rem at 85% 50%, rgba(98, 126, 234, 0.16), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012) 60%),
+    var(--bg-2);
+
+  h3 {
+    margin: 14px 0 10px;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  > .chain-copy > p {
+    color: var(--muted);
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #b9c3ff;
+  background: rgba(98, 126, 234, 0.14);
+  border: 1px solid rgba(98, 126, 234, 0.35);
+}
+
+.points {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0 22px;
+
+  li {
+    display: flex;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: #d5d9e8;
+
+    i {
+      margin-top: 5px;
+      font-size: 0.75rem;
+      color: #8c9cff;
+    }
+  }
+}
+
+.chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 150px;
+  padding: 14px 12px;
+  border-radius: 14px;
+  font-family: var(--font-mono);
+  background: linear-gradient(180deg, rgba(140, 156, 255, 0.12), rgba(140, 156, 255, 0.03));
+  border: 1px solid rgba(140, 156, 255, 0.32);
+  box-shadow: 0 16px 40px -20px rgba(98, 126, 234, 0.8);
+  animation: block-in 0.8s cubic-bezier(0.2, 0.65, 0.3, 1) both;
+
+  &.pending {
+    border-style: dashed;
+    background: rgba(255, 255, 255, 0.02);
+    animation: pulse-border 2s ease-in-out infinite;
+  }
+}
+
+.block-h {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e3e6f5;
+  white-space: nowrap;
+}
+
+.block-hash {
+  font-size: 0.66rem;
+  color: #8c9cff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.block-tx {
+  font-size: 0.64rem;
+  color: var(--dim);
+
+  i {
+    color: var(--success);
+  }
+}
+
+.pending .block-tx i {
+  color: #fbbf24;
+}
+
+.mining span {
+  display: inline-block;
+  animation: blink 1s steps(2) infinite;
+}
+
+.link {
+  position: relative;
+  flex: 0 0 18px;
+  height: 2px;
+  background: rgba(140, 156, 255, 0.35);
+
+  i {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8c9cff;
+    box-shadow: 0 0 8px #8c9cff;
+    animation: hop 1.6s ease-in-out infinite;
+  }
+}
+
+/* ---------- Case study strip ---------- */
+.case {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  padding: 28px 32px;
+
+  h3 {
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+  }
+}
+
+.case-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-3);
+}
+
+.case-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent-2);
+
+  i {
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover i {
+    transform: translateX(4px);
+  }
+}
+
+.case-items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+
+  li {
+    display: flex;
+    gap: 12px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  b {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--text);
+    font-weight: 600;
+  }
+}
+
+.case-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #f9a8d4;
+  background: rgba(244, 114, 182, 0.12);
+  border: 1px solid rgba(244, 114, 182, 0.3);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10.8;
+  }
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: -6px;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+// Each of the 4 flows is visible for ~3s of a 12s loop.
+@keyframes flow-cycle {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  4%,
+  21% {
+    opacity: 1;
+    transform: none;
+  }
+  25%,
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes block-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+}
+
+@keyframes pulse-border {
+  50% {
+    border-color: rgba(251, 191, 36, 0.6);
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.06);
+  }
+}
+
+@keyframes hop {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 6px);
+    opacity: 0;
+  }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .int-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .chain-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .case {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .node-tile {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  .node-label {
+    font-size: 0.58rem;
+  }
+
+  .core b {
+    font-size: 0.58rem;
+  }
+
+  // Let each automation wrap onto two lines instead of being cut off.
+  .flows {
+    border-radius: 16px;
+    font-size: 0.8rem;
+  }
+
+  .flow-track {
+    height: 2.9em;
+  }
+
+  .flow {
+    display: block;
+    align-content: center;
+    white-space: normal;
+    line-height: 1.45;
+
+    i {
+      margin: 0 5px;
+    }
+  }
+
+  .cap {
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .chain-card {
+    margin-top: 40px;
+    padding: 24px 20px;
+  }
+
+  // 2 × 2 grid of blocks on phones; the links become short vertical stubs between rows
+  .chain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .block {
+    max-width: none;
+  }
+
+  .link {
+    display: none;
+  }
+
+  .case {
+    padding: 22px 20px;
+  }
+
+  .case-items {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .packet {
+    display: none;
+  }
+
+  // The cycle would end on an invisible frame — just show the first automation.
+  .flow {
+    animation: none;
+  }
+  .flow:first-child {
+    opacity: 1;
+  }
+}

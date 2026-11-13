@@ -1,0 +1,53 @@
+<div class="section container">
+  <div class="section-head" appReveal>
+    <span class="eyebrow">Education</span>
+    <h2 class="section-title">Academic <span class="grad-text">foundation</span></h2>
+  </div>
+
+  <div class="edu-grid">
+    <div
+      class="edu-cell"
+      *ngFor="let e of education; let i = index; let first = first"
+      appScrollFx
+      [fxEnd]="0.55"
+      [fxDelay]="(i % 4) * 0.12"
+    >
+      <article class="edu fx-card fx-flip" [class.featured]="first" appSpotlight [style.--pct]="e.pct">
+        <span class="year-bg" aria-hidden="true">{{ e.year }}</span>
+
+        <div class="top">
+          <span class="icon"><i class="fas" [ngClass]="first ? 'fa-user-graduate' : 'fa-book-open'"></i></span>
+          <span class="year">Class of {{ e.year }}</span>
+        </div>
+
+        <h3>{{ e.degree }}</h3>
+        <p class="school">{{ e.school }}</p>
+
+        <div class="score">
+          <svg class="ring" viewBox="0 0 80 80" aria-hidden="true">
+            <defs>
+              <linearGradient [attr.id]="'ring-grad-' + i" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#7c5cff" />
+                <stop offset="100%" stop-color="#22d3ee" />
+              </linearGradient>
+            </defs>
+            <circle class="track" cx="40" cy="40" r="34" />
+            <circle
+              class="fill"
+              cx="40"
+              cy="40"
+              r="34"
+              [attr.stroke]="'url(#ring-grad-' + i + ')'"
+              [style.stroke-dasharray]="ring"
+              [style.--c]="ring"
+            />
+          </svg>
+          <div class="score-text">
+            <strong>{{ e.score }}</strong>
+            <span>Score</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

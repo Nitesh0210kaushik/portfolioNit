@@ -1,0 +1,39 @@
+<div class="section container">
+  <div class="section-head" appReveal>
+    <span class="eyebrow">Experience</span>
+    <h2 class="section-title">Where I've <span class="grad-text">built &amp; shipped</span></h2>
+    <p class="section-sub">Three companies, from ERP automation to restaurant POS, AI SaaS and live-streaming apps.</p>
+  </div>
+
+  <ol class="timeline" appScrollFx fxMode="track" [fxStart]="0.6">
+    <li class="item" *ngFor="let job of jobs; let i = index" appScrollFx [fxStart]="0.95" [fxEnd]="0.55">
+      <div class="node"><span></span></div>
+
+      <div class="card-wrap fx-door">
+        <article class="card fx-card" appSpotlight>
+          <span class="watermark" aria-hidden="true">{{ job.initials }}</span>
+
+          <header>
+            <span class="avatar">{{ job.initials }}</span>
+            <div class="titles">
+              <h3>{{ job.company }}</h3>
+              <p class="role">{{ job.role }}</p>
+            </div>
+            <div class="when">
+              <span class="period"><i class="far fa-calendar"></i> {{ job.period }}</span>
+              <span class="duration" *ngIf="job.duration">{{ job.duration }}</span>
+            </div>
+          </header>
+
+          <ul class="highlights">
+            <li *ngFor="let h of job.highlights">{{ h }}</li>
+          </ul>
+
+          <div class="chips">
+            <span class="chip" *ngFor="let s of job.stack"><app-tech-logo [name]="s"></app-tech-logo>{{ s }}</span>
+          </div>
+        </article>
+      </div>
+    </li>
+  </ol>
+</div>

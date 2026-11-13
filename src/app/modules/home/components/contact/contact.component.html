@@ -1,74 +1,70 @@
-<div class="contact-container">
-  <div class="about-section">
-    <h2>Contact</h2>
-  </div>
+<div class="section container">
+  <div class="panel fx-card" appReveal appSpotlight>
+    <div class="glow" aria-hidden="true"></div>
 
-  <div class="contact-wrapper">
-    <div class="contact-info">
-      <div class="info-box">
-        <h4>Address 📍</h4>
-        <p>Rosera, Samastipur, Bihar</p>
-      </div>
-      <div class="info-box">
-        <h4>Call Us 📞</h4>
-        <p><a href="tel:+916203716045">+91 6203716045</a></p>
-      </div>
+    <div class="intro">
+      <span class="eyebrow">Contact</span>
+      <h2 class="section-title">Let's build something <span class="grad-text">great together</span></h2>
+      <p class="section-sub">
+        Hiring for a full-stack, React, Angular or React Native role — or have a product idea? My inbox is always open
+        and I usually reply within a day.
+      </p>
 
-      <div class="info-box">
-        <h4>Email Us ✉️</h4>
-        <p>
-          <a href="mailto:nitesh2kaushik@gmail.com"
-            >nitesh2kaushik&#64;gmail.com</a
-          >
-        </p>
-      </div>
+      <ul class="channels">
+        <li *ngFor="let c of channels">
+          <span class="ch-icon"><i [class]="c.icon"></i></span>
+          <div>
+            <span class="ch-label">{{ c.label }}</span>
+            <a *ngIf="c.href; else plain" [href]="c.href" target="_blank" rel="noopener noreferrer">{{ c.value }}</a>
+            <ng-template #plain
+              ><span class="ch-value">{{ c.value }}</span></ng-template
+            >
+          </div>
+        </li>
+      </ul>
     </div>
-    <div class="contact-form">
-      <!-- (ngSubmit)="onSubmit()" -->
-      <!--   -->
-      <form *ngIf="!isSubmitted" [formGroup]="contactForm">
-        <div class="form-group-row">
-          <input type="text" placeholder="Your Name" formControlName="name" />
-          <input
-            type="email"
-            placeholder="Your Email"
-            formControlName="email"
-          />
+
+    <div class="form-side">
+      <form *ngIf="state === 'idle' || state === 'sending'; else done" [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row">
+          <label class="field" [class.error]="invalid('name')">
+            <span>Your name</span>
+            <input type="text" formControlName="name" autocomplete="name" placeholder="Jane Recruiter" />
+          </label>
+          <label class="field" [class.error]="invalid('email')">
+            <span>Email</span>
+            <input type="email" formControlName="email" autocomplete="email" placeholder="jane@company.com" />
+          </label>
         </div>
-        <input
-          type="text"
-          placeholder="Subject"
-          class="full-width"
-          formControlName="subject"
-        />
-        <textarea
-          rows="6"
-          placeholder="Message"
-          class="full-width"
-          formControlName="message"
-        ></textarea>
-        <button
-          type="submit"
-          (click)="onSubmit()"
-          [disabled]="contactForm.invalid || isLoading"
-        >
-          Send Message
+        <label class="field" [class.error]="invalid('subject')">
+          <span>Subject</span>
+          <input type="text" formControlName="subject" placeholder="Full Stack Developer role" />
+        </label>
+        <label class="field" [class.error]="invalid('message')">
+          <span>Message</span>
+          <textarea rows="5" formControlName="message" placeholder="Tell me about the role or project…"></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primary submit" [disabled]="state === 'sending'">
+          <ng-container *ngIf="state === 'sending'; else idleLabel">
+            <span class="spinner"></span> Sending…
+          </ng-container>
+          <ng-template #idleLabel>Send message <i class="fas fa-paper-plane"></i></ng-template>
         </button>
-        <!-- [ngClass]="{ 'loading-btn': isLoading }" -->
-        <!-- <button
-          type="submit"
-          [disabled]="contactForm.invalid || isLoading"
-          [ngClass]="{ 'loading-btn': isLoading }"
-        >
-          <span>Send Message</span>
-        </button> -->
       </form>
 
-      <div class="thank-you-message" *ngIf="isSubmitted">
-        <img src="../../../../../assets/images/Confirmed.png" alt="Confirmed" />
-        <h3>Thank you!</h3>
-        <p>Your message was submitted successfully.</p>
-      </div>
+      <ng-template #done>
+        <div class="done">
+          <span class="done-icon"><i class="fas" [ngClass]="state === 'sent' ? 'fa-check' : 'fa-envelope-open-text'"></i></span>
+          <h3>{{ state === 'sent' ? 'Message sent — thank you!' : 'Almost there!' }}</h3>
+          <p *ngIf="state === 'sent'">I'll get back to you shortly.</p>
+          <p *ngIf="state === 'mailto'">
+            Your email app should have opened with the message ready to send. If it didn't, write to
+            <a [href]="'mailto:' + profile.email">{{ profile.email }}</a>.
+          </p>
+          <button class="btn btn-ghost" (click)="reset()">Send another</button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

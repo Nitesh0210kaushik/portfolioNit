@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  baseUrl = ' https://bulkdata-6.onrender.com';
+  baseUrl = 'https://bulkdata-6.onrender.com';
 
   constructor(private http: HttpClient) {}
 

@@ -1,0 +1,135 @@
+<div class="section container">
+  <div class="section-head center" appReveal>
+    <span class="eyebrow">AI · Integrations · Web3</span>
+    <h2 class="section-title">AI that plugs into <span class="grad-text">the tools you already use</span></h2>
+    <p class="section-sub">
+      I build AI-powered apps and connect them to the tools a business already runs on, from spreadsheets and CRMs to
+      no-code automations. I also build decentralised systems on the blockchain.
+    </p>
+  </div>
+
+  <div class="int-grid">
+    <!-- Integration hub -->
+    <div class="hub-col" appReveal>
+      <div class="hub" aria-label="AI connected to Google Sheets, HubSpot, Airtable, Zapier, Excel, Gmail, n8n and Make">
+        <div class="orbit orbit-1" aria-hidden="true"></div>
+        <div class="orbit orbit-2" aria-hidden="true"></div>
+
+        <svg class="wires" viewBox="0 0 100 100" aria-hidden="true">
+          <g *ngFor="let n of nodes" [style.--c]="n.color">
+            <line class="wire" x1="50" y1="50" [attr.x2]="n.x" [attr.y2]="n.y" />
+            <line class="wire-flow" x1="50" y1="50" [attr.x2]="n.x" [attr.y2]="n.y" />
+            <circle class="packet" r="1.1">
+              <animateMotion dur="2.6s" repeatCount="indefinite" [attr.begin]="n.begin" [attr.path]="n.path" />
+            </circle>
+          </g>
+        </svg>
+
+        <div class="core">
+          <span class="core-ring" aria-hidden="true"></span>
+          <span class="core-logos">
+            <app-tech-logo name="OpenAI" [size]="20"></app-tech-logo>
+            <app-tech-logo name="Claude" [size]="20"></app-tech-logo>
+          </span>
+          <b>AI core</b>
+        </div>
+
+        <div
+          class="node"
+          *ngFor="let n of nodes; let i = index"
+          [style.left.%]="n.x"
+          [style.top.%]="n.y"
+          [style.--c]="n.color"
+          [style.animation-delay.ms]="i * 180"
+        >
+          <span class="node-tile"><app-tech-logo [name]="n.label" [size]="22"></app-tech-logo></span>
+          <span class="node-label">{{ n.label }}</span>
+        </div>
+      </div>
+
+      <div class="flows" aria-hidden="true">
+        <span class="flow-live"><i></i>Live</span>
+        <span class="flow-track">
+          <span class="flow" *ngFor="let f of data.flows; let i = index" [style.animation-delay.s]="i * 3">
+            {{ f.from }} <i class="fas fa-arrow-right"></i> <b>{{ f.to }}</b>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <!-- What I build -->
+    <div class="caps">
+      <article
+        class="cap fx-card"
+        *ngFor="let c of data.capabilities; let i = index"
+        appReveal
+        appSpotlight
+        [revealDelay]="i * 110"
+        [style.--a]="c.accent"
+        [style.--glow]="c.accent"
+      >
+        <span class="cap-icon"><i [class]="c.icon"></i></span>
+        <div class="cap-body">
+          <h3>{{ c.title }}</h3>
+          <p>{{ c.text }}</p>
+          <div class="chips">
+            <span class="chip" *ngFor="let s of c.stack">
+              <app-tech-logo [name]="s" [size]="13"></app-tech-logo>{{ s }}
+            </span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Blockchain -->
+  <article class="chain-card fx-card" appReveal appSpotlight>
+    <div class="chain-copy">
+      <span class="tag"><i class="fab fa-ethereum"></i> Web3</span>
+      <h3>{{ data.blockchain.title }}</h3>
+      <p>{{ data.blockchain.text }}</p>
+      <ul class="points">
+        <li *ngFor="let p of data.blockchain.points"><i class="fas fa-cube"></i>{{ p }}</li>
+      </ul>
+      <div class="chips">
+        <span class="chip" *ngFor="let s of data.blockchain.stack">
+          <app-tech-logo [name]="s" [size]="13"></app-tech-logo>{{ s }}
+        </span>
+      </div>
+    </div>
+
+    <div class="chain" aria-hidden="true">
+      <ng-container *ngFor="let b of blocks; let i = index">
+        <div class="block" [style.animation-delay.ms]="i * 220">
+          <span class="block-h">Block #{{ b.height }}</span>
+          <span class="block-hash">{{ b.hash }}</span>
+          <span class="block-tx"><i class="fas fa-check"></i> {{ b.txs }} txs</span>
+        </div>
+        <span class="link"><i></i></span>
+      </ng-container>
+      <div class="block pending">
+        <span class="block-h">Block #18,204</span>
+        <span class="block-hash"><span class="mining">Mining<span>…</span></span></span>
+        <span class="block-tx"><i class="fas fa-hourglass-half"></i> pending</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Proof: real work -->
+  <div class="case fx-card" appReveal appSpotlight>
+    <div class="case-head">
+      <span class="case-eyebrow">Real project</span>
+      <h3>Shipped at <span class="grad-text">{{ data.caseStudy.name }}</span></h3>
+      <button class="case-link" (click)="scrollTo('work')">See the project <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <ul class="case-items">
+      <li *ngFor="let it of data.caseStudy.items">
+        <span class="case-icon"><i [class]="it.icon"></i></span>
+        <span>
+          <b>{{ it.title }}</b>
+          {{ it.text }}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

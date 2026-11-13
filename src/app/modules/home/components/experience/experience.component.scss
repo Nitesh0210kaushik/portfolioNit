@@ -1,0 +1,236 @@
+.timeline {
+  position: relative;
+  list-style: none;
+  padding-left: 64px;
+
+  // Rail: a faint track plus a gradient fill that grows with scroll (--p from track mode).
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    border-radius: 2px;
+  }
+
+  &::before {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &::after {
+    background: linear-gradient(var(--accent), var(--accent-2));
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.6);
+    transform-origin: 50% 0;
+    transform: scaleY(var(--p, 1));
+  }
+}
+
+.item {
+  position: relative;
+
+  & + & {
+    margin-top: 36px;
+  }
+}
+
+// Node lights up as its card opens (inherits the item's --p).
+.node {
+  position: absolute;
+  z-index: 1;
+  left: -64px;
+  top: 34px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 0 0 calc(var(--p, 1) * 7px) rgba(34, 211, 238, 0.08), 0 0 calc(var(--p, 1) * 26px) rgba(34, 211, 238, 0.45);
+
+  span {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--grad);
+    transform: scale(calc(0.3 + var(--p, 1) * 0.7));
+  }
+}
+
+.card-wrap {
+  transform-origin: 0% 50%;
+}
+
+.card {
+  padding: 32px;
+  overflow: hidden;
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+}
+
+.watermark {
+  position: absolute;
+  right: -10px;
+  bottom: -40px;
+  font-family: var(--font-display);
+  font-size: 11rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--grad);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 12px 30px -10px rgba(124, 92, 255, 0.9);
+}
+
+.titles {
+  flex: 1;
+  min-width: 200px;
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+}
+
+.role {
+  color: var(--accent-2);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.when {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.period {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  white-space: nowrap;
+}
+
+.duration {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  padding-right: 6px;
+}
+
+.highlights {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+
+  li {
+    position: relative;
+    padding-left: 26px;
+    color: #c4c8d8;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 12px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--grad);
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .timeline {
+    padding-left: 34px;
+
+    &::before,
+    &::after {
+      left: 9px;
+    }
+  }
+
+  .node {
+    left: -34px;
+    top: 26px;
+    width: 20px;
+    height: 20px;
+
+    span {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  .card {
+    padding: 22px 18px;
+
+    header {
+      gap: 14px;
+    }
+  }
+
+  .avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    font-size: 0.95rem;
+  }
+
+  .titles {
+    min-width: 0;
+
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .when {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .highlights li {
+    font-size: 0.93rem;
+  }
+
+  .watermark {
+    font-size: 7rem;
+  }
+}

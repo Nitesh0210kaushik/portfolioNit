@@ -1,64 +1,263 @@
-.sidebar {
-  width: 250px;
-  background-color: #0f1b2b;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  padding-top: 25px;
-  // overflow-y: scroll;
-  overflow: auto;
-  height: 100vh;
-  padding-bottom: 20px;
-  position: relative;
-}
-
-.profile {
-  text-align: center;
-}
-
-.profile-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: auto;
-}
-
-.profile h2 {
-  margin-top: 10px;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 15px 0;
-}
-
-.social-icons i {
-  background: #1f2d3d;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.nav-menu {
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px;
-  gap: 15px;
-}
-
-.nav-menu a {
-  color: white;
-  text-decoration: none;
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--nav-h);
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 10px;
-  transition: 0.3s ease;
+  transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+  border-bottom: 1px solid transparent;
+
+  &.scrolled,
+  &.open {
+    background: rgba(5, 6, 10, 0.72);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border-bottom-color: var(--border);
+  }
 }
 
-.nav-menu a:hover {
-  background-color: #1c2a3a;
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  background: var(--grad);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--grad);
+  color: #fff;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+  box-shadow: 0 8px 24px -8px rgba(124, 92, 255, 0.8);
+  transition: transform 0.4s ease;
+}
+
+.brand:hover .mark {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-size: 1.12rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.brand-role {
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+// Between tablet and desktop the 7-link nav needs the room; phones have it again.
+@media (min-width: 1101px) and (max-width: 1240px) {
+  .brand-role {
+    display: none;
+  }
+  .nav .links a {
+    padding-inline: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-name {
+    font-size: 1rem;
+  }
+  .brand-role {
+    display: none;
+  }
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+
+  a {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    color: var(--muted);
+    transition: color 0.25s ease, background 0.25s ease;
+
+    &:hover {
+      color: var(--text);
+    }
+
+    &.active {
+      color: #fff;
+      background: rgba(124, 92, 255, 0.22);
+      box-shadow: inset 0 0 0 1px rgba(124, 92, 255, 0.4);
+    }
+  }
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resume-btn {
+  height: 42px;
+  padding: 0 20px;
+  font-size: 0.88rem;
+}
+
+.burger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+
+  span {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+    transition: transform 0.3s ease, top 0.3s ease;
+
+    &:first-child {
+      top: 17px;
+    }
+    &:last-child {
+      top: 25px;
+    }
+  }
+}
+
+.open .burger span {
+  &:first-child {
+    top: 21px;
+    transform: rotate(45deg);
+  }
+  &:last-child {
+    top: 21px;
+    transform: rotate(-45deg);
+  }
+}
+
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .links,
+  .resume-btn {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+  }
+
+  // A backdrop-filter on the bar becomes the backdrop root of the menu inside it and lets the
+  // page show through the menu — so the open bar goes solid instead.
+  .nav.open {
+    background: rgb(5, 6, 10);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--nav-h));
+    height: calc(100dvh - var(--nav-h));
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(5, 6, 10, 0.96);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+
+    a:not(.btn) {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding: 14px 4px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.4s ease, transform 0.4s ease, color 0.2s;
+
+      &.active {
+        color: var(--accent-2);
+      }
+    }
+
+    .idx {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--dim);
+    }
+
+    .btn {
+      margin-top: 24px;
+    }
+  }
+
+  .open .mobile-menu {
+    opacity: 1;
+    visibility: visible;
+
+    a:not(.btn) {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }

@@ -1,57 +1,57 @@
-<div class="about-section">
-  <h2>About</h2>
-  <p class="intro-text">
-    I'm Nitesh Kaushik, a passionate MEAN Stack Developer from Begusarai, Bihar
-    (India), with 1.8 years of hands-on experience in building scalable web
-    applications.
-  </p>
-
-  <div class="about-content">
-    <div class="image-section">
-      <img src="../../../../../assets/images/picc.jpg" alt="Nitesh Kaushik" />
+<div class="section container">
+  <div class="about-grid">
+    <div class="portrait-wrap" appReveal>
+      <div class="portrait" appTilt [tiltMax]="8">
+        <div class="frame">
+          <img [src]="profile.photo" alt="Portrait of Nitesh Kaushik" width="1181" height="1450" loading="lazy" />
+          <div class="glare"></div>
+        </div>
+        <div class="badge badge-exp glass">
+          <strong class="grad-text">3+</strong>
+          <span>Years building<br />production apps</span>
+        </div>
+        <div class="badge badge-stack glass">
+          <i class="fas fa-code"></i>
+          <span>MERN · MEAN · React Native</span>
+        </div>
+      </div>
     </div>
 
-    <div class="info-section">
-      <h3>Software Development Engineer</h3>
-      <p class="summary">
-        I specialize in Angular, Node.js,React, Express, and MongoDB to deliver
-        fast, dynamic, and secure web applications tailored to business needs.
+    <div class="copy">
+      <div appReveal>
+        <span class="eyebrow">About me</span>
+        <h2 class="section-title">
+          An engineer who ships <span class="grad-text">end-to-end products</span>
+        </h2>
+      </div>
+
+      <p class="para" *ngFor="let p of profile.about; let i = index" appReveal [revealDelay]="100 + i * 80">
+        {{ p }}
       </p>
 
-      <div class="info-grid">
-        <ul>
-          <li><strong>🎂 Birthday:</strong> 02 October 2000</li>
-          <li>
-            <strong>🌐 Website:</strong
-            ><a href="https://nitport.netlify.app"> Portfolio</a>
-          </li>
-          <!-- <li><strong>📞 Phone:</strong> +91 9876543210</li> -->
-          <li>
-            <strong>📞 Phone:</strong>
-            <a href="tel:+916203716045">+91 6203716045</a>
-          </li>
-
-          <li><strong>🏙️ City:</strong> Samastipur, Bihar, India</li>
-        </ul>
-        <ul>
-          <li><strong>🎂 Age:</strong> 24</li>
-          <li><strong>🎓 Degree:</strong> MCA</li>
-
-          <li>
-            <strong>✉️ Email:</strong>
-            <a href="mailto:nitesh2kaushik@gmail.com"
-              >nitesh2kaushik&#64;gmail.com</a
+      <ul class="facts" appReveal [revealDelay]="260">
+        <li *ngFor="let f of facts">
+          <i [class]="f.icon"></i>
+          <div>
+            <span class="label">{{ f.label }}</span>
+            <a *ngIf="f.href; else plain" [href]="f.href">{{ f.value }}</a>
+            <ng-template #plain
+              ><span class="value">{{ f.value }}</span></ng-template
             >
-          </li>
-
-          <li><strong>🟢 Freelance:</strong> Available</li>
-        </ul>
-      </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <p class="bottom-text">
-    I am always eager to learn new technologies and grow professionally. Let's
-    collaborate to build something amazing!
-  </p>
+  <div class="focus">
+    <div class="focus-cell" *ngFor="let f of focus; let i = index" appScrollFx [fxEnd]="0.55" [fxDelay]="i * 0.14">
+      <article class="focus-card fx-card fx-unfold" appSpotlight>
+        <span class="focus-num" aria-hidden="true">0{{ i + 1 }}</span>
+        <span class="focus-icon"><i [class]="f.icon"></i></span>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.text }}</p>
+      </article>
+    </div>
+  </div>
 </div>

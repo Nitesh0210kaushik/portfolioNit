@@ -1,27 +1,30 @@
-<div class="home-layout">
-  <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
-    <i
-      [ngClass]="menuOpen ? 'fas fa-times fc-blue' : 'fas fa-bars fc-blue'"
-    ></i>
-  </button>
+<app-header></app-header>
 
-  <app-header [class.open]="menuOpen" (close)="menuOpen = false"></app-header>
+<main>
+  <app-hero></app-hero>
 
-  <div class="main-content-area" [class.menu-opened]="menuOpen">
-    <main id="hero" class="main-content">
-      <div class="hero">
-        <h1>Nitesh Kaushik</h1>
-        <p class="typing-container">
-          I am a &nbsp;
-          <span class="typing-text"></span>
-          <span class="cursor">|</span>
-        </p>
+  <div class="ticker" aria-label="Technologies I work with">
+    <p class="ticker-label"><span></span>The stack I ship with<span></span></p>
+    <div class="lane" *ngFor="let l of lanes; let li = index" [class.reverse]="li % 2 === 1">
+      <div class="track">
+        <ng-container *ngFor="let copy of [0, 1]">
+          <span class="pill" *ngFor="let t of l" [style.--c]="t.color" [attr.aria-hidden]="copy === 1 ? 'true' : null">
+            <span class="pill-logo"><app-tech-logo [name]="t.label" [size]="20"></app-tech-logo></span>
+            {{ t.label }}
+          </span>
+        </ng-container>
       </div>
-    </main>
-    <section id="about"><app-about></app-about></section>
-    <section id="skills"><app-skills></app-skills></section>
-    <section id="resume"><app-resume></app-resume></section>
-    <section id="projects"><app-projects></app-projects></section>
-    <section id="contact"><app-contact></app-contact></section>
+    </div>
   </div>
-</div>
+
+  <section id="about"><app-about></app-about></section>
+  <section id="services"><app-services></app-services></section>
+  <section id="integrations"><app-integrations></app-integrations></section>
+  <section id="experience"><app-experience></app-experience></section>
+  <section id="work"><app-projects></app-projects></section>
+  <section id="skills"><app-skills></app-skills></section>
+  <section id="education"><app-education></app-education></section>
+  <section id="contact"><app-contact></app-contact></section>
+</main>
+
+<app-footer></app-footer>

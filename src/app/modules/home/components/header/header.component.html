@@ -1,39 +1,53 @@
-<aside class="sidebar">
-  <div class="profile">
-    <img
-      src="../../../../../assets/images/picc.jpg"
-      alt="Nitesh Kaushik"
-      class="profile-img"
-    />
-    <h2>Nitesh Kaushik</h2>
-    <div class="social-icons" (click)="closeMenu()">
-      <i
-        class="fas fa-times"
-        (click)="openSocial('x')"
-        aria-label="Close menu"
-      ></i>
-      <i class="fab fa-facebook-f" (click)="openSocial('facebook')"></i>
-      <i class="fab fa-instagram" (click)="openSocial('instagram')"></i>
-      <i class="fab fa-linkedin-in" (click)="openSocial('linkedin')"></i>
+<header class="nav" [class.scrolled]="scrolled" [class.open]="menuOpen">
+  <div class="progress" [style.transform]="'scaleX(' + progress + ')'"></div>
+
+  <div class="container nav-inner">
+    <a class="brand" href="#home" (click)="go('home', $event)" aria-label="Nitesh Kaushik — home">
+      <span class="mark">NK</span>
+      <span class="brand-text">
+        <span class="brand-name">Nitesh <span class="grad-text">Kaushik</span></span>
+        <span class="brand-role">{{ profile.title }}</span>
+      </span>
+    </a>
+
+    <nav class="links" aria-label="Primary">
+      <a
+        *ngFor="let l of links"
+        [href]="'#' + l.id"
+        (click)="go(l.id, $event)"
+        [class.active]="active === l.id"
+        >{{ l.label }}</a
+      >
+    </nav>
+
+    <div class="nav-cta">
+      <a class="btn btn-primary resume-btn" [href]="profile.resume" download="Nitesh_Kaushik_Resume.pdf">
+        <i class="fas fa-download"></i> Résumé
+      </a>
+      <button
+        class="burger"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen"
+        aria-controls="mobile-menu"
+        aria-label="Toggle menu"
+      >
+        <span></span><span></span>
+      </button>
     </div>
   </div>
 
-  <nav class="nav-menu">
-    <a (click)="scrollToSection('hero')"><i class="fas fa-home"></i> Home</a>
-    <a (click)="scrollToSection('about')"><i class="fas fa-user"></i> About</a>
-    <a (click)="scrollToSection('skills')"
-      ><i class="fas fa-tools"></i> Skills</a
+  <div class="mobile-menu" id="mobile-menu">
+    <a
+      *ngFor="let l of links; let i = index"
+      [href]="'#' + l.id"
+      (click)="go(l.id, $event)"
+      [class.active]="active === l.id"
+      [style.transition-delay.ms]="menuOpen ? 60 + i * 40 : 0"
     >
-    <a (click)="scrollToSection('projects')">
-      <i class="fas fa-tasks"></i> Projects
+      <span class="idx">0{{ i + 1 }}</span>{{ l.label }}
     </a>
-
-    <a (click)="scrollToSection('resume')"
-      ><i class="fas fa-file"></i> Resume</a
-    >
-
-    <a (click)="scrollToSection('contact')"
-      ><i class="fas fa-envelope"></i> Contact</a
-    >
-  </nav>
-</aside>
+    <a class="btn btn-primary" [href]="profile.resume" download="Nitesh_Kaushik_Resume.pdf">
+      <i class="fas fa-download"></i> Download résumé
+    </a>
+  </div>
+</header>

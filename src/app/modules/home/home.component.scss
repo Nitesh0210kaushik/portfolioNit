@@ -1,159 +1,120 @@
-.home-layout {
-  display: flex;
-  height: 100vh;
+// Clip sideways overflow from mid-animation 3D transforms (clip, unlike hidden, keeps sticky working).
+main {
+  display: block;
+  overflow-x: clip;
+}
+
+/* ---------- Tech ticker: two lanes of official-logo pills ---------- */
+.ticker {
+  position: relative;
+  padding: 56px 0 24px;
   overflow: hidden;
-  position: relative;
+  // soft fade at both edges
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+
+  &:hover .track {
+    animation-play-state: paused;
+  }
 }
 
-.main-content-area {
-  flex: 1;
-  height: 100vh;
-  overflow-y: auto;
-  background: #f5f5f5;
-  transition: padding-left 0.3s ease;
-}
-
-.main-content {
-  flex: 1;
-  background: url("../../../../src/assets/images/elevated-view-laptop-earphones-crumpled-papers-pencil-blank-spiral-notepad-frame-black-background.jpg")
-    no-repeat center center/cover;
+.ticker-label {
   display: flex;
   align-items: center;
-  padding-left: 60px;
-  color: white;
-  width: 100%;
-  // height: 100vh;
-  height: 250px;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+
+  span {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-strong));
+
+    &:last-child {
+      transform: scaleX(-1);
+    }
+  }
 }
 
-// .hero {
-//   z-index: 1;
-//   position: relative;
-//   left: 550px;
-// }
+.lane {
+  padding: 7px 0;
 
-.hero {
-  z-index: 1;
-  position: relative;
-  left: 0; // prevent overflow
-  margin-left: auto;
-  // margin-right: auto;
-  margin-right: 150px;
-  text-align: center;
+  &.reverse .track {
+    animation-direction: reverse;
+    animation-duration: 52s;
+  }
 }
 
-.skills {
-  padding: 40px;
+.track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  padding-right: 14px;
+  animation: marquee 44s linear infinite;
 }
 
-.fc-blue {
-  color: #2196f3;
-}
-.hero h1 {
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 24px;
-  margin: 0;
-}
-
-.highlight {
-  border-bottom: 2px solid #33b5e5;
-}
-
-.typing-container {
+.pill {
+  --c: #7c5cff;
   display: inline-flex;
-  flex: 1;
   align-items: center;
+  gap: 12px;
+  padding: 10px 20px 10px 10px;
+  border-radius: 16px;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #e7e9f2;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)), var(--bg-2);
+  border: 1px solid var(--border);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--c) 70%, transparent);
+    box-shadow: 0 14px 34px -14px var(--c);
+  }
 }
 
-.projects-section {
-  padding: 60px 20px;
-  background-color: #f0f4f8;
-  text-align: center;
+.pill-logo {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 28%, transparent);
 }
 
-.section-heading {
-  font-size: 32px;
-  font-weight: 700;
-  color: #0f1b2b;
-  margin-bottom: 40px;
-  border-bottom: 3px solid #33b5e5;
-  display: inline-block;
-  padding-bottom: 8px;
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-.menu-toggle {
-  display: none;
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  z-index: 1100;
-  font-size: 28px;
-  background: none;
-  border: none;
-  color: #0f1b2b;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
+@media (max-width: 600px) {
+  .ticker {
+    padding-top: 36px;
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   }
 
-  app-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh;
-    background-color: #0f1b2b;
-    color: white;
-    overflow-y: auto;
-    z-index: 1050;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+  .pill {
+    gap: 9px;
+    padding: 7px 14px 7px 7px;
+    font-size: 0.88rem;
+    border-radius: 13px;
   }
 
-  app-header.open {
-    transform: translateX(0);
-  }
-
-  .hero {
-    left: 65px;
-    top: 25px;
-    text-align: center;
-    position: relative;
-    // width: 100%;
-    // width: auto;
-    margin-right: auto;
-  }
-  // .main-content-area.menu-opened {
-  //   padding-left: 250px;
-  // }
-
-  .main-content {
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 60px 20px;
-    box-sizing: border-box;
-    text-align: left;
-    height: 150px;
-  }
-
-  .hero h1 {
-    font-size: 20px;
-  }
-
-  .hero p {
-    font-size: 15px;
-  }
-
-  .skills {
-    padding: 10px;
+  .pill-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
   }
 }

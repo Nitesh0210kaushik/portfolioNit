@@ -1,16 +1,424 @@
-/* You can add global styles to this file, and also import other style files */
-* {
+/* ---------- Design tokens ---------- */
+:root {
+  --bg: #05060a;
+  --bg-2: #0a0c14;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #eceef5;
+  --muted: #9ba1b5;
+  --dim: #646a7e;
+  --accent: #7c5cff;
+  --accent-2: #22d3ee;
+  --accent-3: #f472b6;
+  --success: #34d399;
+  --grad: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --container: 1200px;
+  --nav-h: 76px;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+html {
   scroll-behavior: smooth;
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  overflow-x: hidden; // Prevent horizontal scroll
+  scroll-padding-top: var(--nav-h);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle grid + glow backdrop behind the whole page */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(124, 92, 255, 0.14), transparent 60%),
+    radial-gradient(50rem 40rem at -10% 40%, rgba(34, 211, 238, 0.08), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 64px 64px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 64px 64px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+::selection {
+  background: rgba(124, 92, 255, 0.45);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent), var(--accent-2));
+  border-radius: 10px;
+  border: 2px solid var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+.section {
+  position: relative;
+  padding-block: 120px;
+}
+
+.section-head {
+  max-width: 720px;
+  margin-bottom: 64px;
+
+  &.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 18px;
+
+  &::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--grad);
+  }
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.section-sub {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Components ---------- */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.btn-primary {
+  background: var(--grad);
+  color: #fff;
+  box-shadow: 0 12px 40px -10px rgba(124, 92, 255, 0.7);
+
+  &:hover {
+    box-shadow: 0 18px 50px -10px rgba(34, 211, 238, 0.6);
+  }
+}
+
+.btn-ghost {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+
+  &:hover {
+    background: var(--surface-2);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #cfd3e3;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  transition: all 0.25s ease;
+
+  &:hover {
+    color: #fff;
+    border-color: transparent;
+    background: var(--grad);
+    transform: translateY(-3px);
+  }
+}
+
+/* Premium card: gradient hairline border + a glow that follows the pointer ([appSpotlight]) */
+.fx-card {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012) 60%),
+    var(--bg-2);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+
+  // Glowing border that follows the pointer
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: radial-gradient(
+      360px circle at var(--mx, 50%) var(--my, 0%),
+      var(--glow, rgba(124, 92, 255, 0.9)),
+      transparent 45%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  // Soft inner light under the pointer
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      480px circle at var(--mx, 50%) var(--my, 0%),
+      var(--glow-soft, rgba(124, 92, 255, 0.1)),
+      transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover {
+    border-color: var(--border-strong);
+
+    &::before,
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  // Touch screens have no hover — keep a gentle lit top edge instead.
+  @media (hover: none) {
+    &::before,
+    &::after {
+      opacity: 0.55;
+    }
+  }
+}
+
+/* ---------- Scroll-driven "opening" (progress from [appScrollFx] as --p) ---------- */
+.fx-unfold {
+  transform-origin: 50% 0%;
+  transform: perspective(1400px)
+    rotateX(calc((1 - var(--p, 1)) * -38deg))
+    translate3d(0, calc((1 - var(--p, 1)) * 90px), 0)
+    scale(calc(0.88 + var(--p, 1) * 0.12));
+  opacity: calc(0.15 + var(--p, 1) * 0.85);
+  will-change: transform, opacity;
+}
+
+.fx-door {
+  transform-origin: 0% 50%;
+  transform: perspective(1600px)
+    rotateY(calc((1 - var(--p, 1)) * 62deg))
+    translate3d(calc((1 - var(--p, 1)) * 40px), 0, 0);
+  opacity: calc(0.1 + var(--p, 1) * 0.9);
+  will-change: transform, opacity;
+}
+
+.fx-flip {
+  transform-origin: 50% 100%;
+  transform: perspective(1200px)
+    rotateX(calc((1 - var(--p, 1)) * 75deg))
+    translate3d(0, calc((1 - var(--p, 1)) * 40px), 0);
+  opacity: calc(var(--p, 1) * 1.4 - 0.2);
+  will-change: transform, opacity;
+}
+
+.fx-rise {
+  transform: translate3d(0, calc((1 - var(--p, 1)) * 60px), 0) scale(calc(0.94 + var(--p, 1) * 0.06));
+  opacity: calc(0.1 + var(--p, 1) * 0.9);
+}
+
+/* ---------- Motion ---------- */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0) rotateX(8deg);
+  transform-origin: 50% 100%;
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.65, 0.3, 1),
+    transform 0.9s cubic-bezier(0.2, 0.65, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[appTilt] {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.65, 0.3, 1);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: 72px;
+  }
+  .section-head {
+    margin-bottom: 44px;
+  }
+  .container {
+    padding-inline: 16px;
+  }
 }

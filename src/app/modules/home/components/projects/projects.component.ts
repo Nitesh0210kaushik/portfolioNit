@@ -1,112 +1,110 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  NgZone,
+  OnDestroy,
+  PLATFORM_ID,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { PROJECTS, Project, SIDE_PROJECTS } from '../../../../core/data/portfolio.data';
+
+const clamp = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
 })
-export class ProjectsComponent {
-  projects = [
-    {
-      name: 'MenewConnect — Restaurant POS & Admin Portal (Software Products)',
-      link: 'https://hub-staging.menew.in/?rid=5fce26e7e1d68a177425b007',
-      description:
-        'Built a comprehensive restaurant management system for order processing, billing, and admin control.',
-      techStack: [
-        'Angular',
-        'Node.js',
-        'Express.js',
-        'JavaScript',
-        'HTML5 + CSS3',
-        'MongoDB',
-      ],
-      features: [
-        {
-          title: 'QR-Based Ordering',
-          icon: '📱',
-          description:
-            'Customers scan QR to place orders directly from their phones.',
-        },
-        {
-          title: 'POS for Restaurant',
-          icon: '🧾',
-          description:
-            'Real-time billing, kitchen order tickets, and payment processing.',
-        },
-        {
-          title: 'Admin Portal',
-          icon: '🛠️',
-          description:
-            'Dashboard with analytics, menu control, and role-based access.',
-        },
-      ],
-    },
-    {
-      name: 'Automatic Certificate Generator Software',
-      description:
-        'A Python-based tool that automates personalized certificate creation using the PIL library and SQL database integration.',
-      techStack: ['Python', 'PIL', 'SQL', 'SQLite'],
-      features: [
-        {
-          title: 'Dynamic Text Overlay',
-          icon: '🖼️',
-          description:
-            'Uses PIL to position participant details on certificate templates with customizable fonts and styles.',
-        },
-        {
-          title: 'Bulk Certificate Generation',
-          icon: '📦',
-          description:
-            'Processes batches of participant data for fast, automated certificate creation.',
-        },
-        {
-          title: 'Database Management',
-          icon: '💾',
-          description:
-            'Stores and retrieves participant details using SQL to ensure data integrity and prevent duplicates.',
-        },
-      ],
-    },
-    {
-      name: 'E web — E-Commerce Website',
-      link: 'https://transcendent-klepon-0a22e6.netlify.app/',
-      description:
-        'A fully functional E-Commerce website built using the MERN stack. The platform supports cart management, user authentication, and admin features with a modern and responsive UI.',
-      techStack: [
-        'React.js',
-        'HTML5',
-        'CSS3',
-        'Redux',
-        'Node.js',
-        'Express.js',
-        'MongoDB',
-      ],
-      features: [
-        {
-          title: 'User Authentication',
-          icon: '🔐',
-          description:
-            'Secure login and registration with password hashing and session handling.',
-        },
-        {
-          title: 'Cart Functionality',
-          icon: '🛒',
-          description:
-            'Add, remove, and manage products in cart using Redux state management.',
-        },
-        {
-          title: 'Responsive UI',
-          icon: '📱',
-          description:
-            'Attractive and mobile-friendly interface designed using modern HTML/CSS.',
-        },
-        // {
-        //   title: 'Admin Dashboard',
-        //   icon: '🧑‍💼',
-        //   description:
-        //     'Manage products, orders, and users with proper MVC structure in backend.',
-        // },
-      ],
-    },
-  ];
+export class ProjectsComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('stack', { static: true }) stack!: ElementRef<HTMLElement>;
+  @ViewChildren('card') cardEls!: QueryList<ElementRef<HTMLElement>>;
+
+  projects = PROJECTS;
+  sideProjects = SIDE_PROJECTS;
+
+  private cleanup: Array<() => void> = [];
+
+  constructor(private zone: NgZone, @Inject(PLATFORM_ID) private platformId: Object) {}
+
+  host(p: Project): string {
+    if (!p.link) return 'private build';
+    return p.link.replace(/^https?:\/\//, '').replace(/[/?].*$/, '');
+  }
+
+  statusClass(p: Project): string {
+    return p.status.toLowerCase().replace(/\s+/g, '-');
+  }
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    this.zone.runOutsideAngular(() => this.initStack());
+  }
+
+  /**
+   * Scroll choreography for the project cards:
+   *  - each card "opens" (tilts up from flat) as it rises into place → --enter
+   *  - on large screens cards stick and stack; the card underneath shrinks and dims → --cover
+   * Stacking switches off automatically when a card is taller than the viewport (small laptops, phones).
+   */
+  private initStack(): void {
+    const stackEl = this.stack.nativeElement;
+    const cards = this.cardEls.map((c) => c.nativeElement);
+    const navH = 76;
+    let stacked = false;
+    let ticking = false;
+
+    const layout = () => {
+      const vh = window.innerHeight;
+      const wide = window.innerWidth >= 1024;
+      const fits = cards.every((c, i) => c.offsetHeight <= vh - (navH + 20 + i * 16) - 16);
+      stacked = wide && fits;
+      stackEl.classList.toggle('stacked', stacked);
+      update();
+    };
+
+    const update = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+      const enter: number[] = cards.map((c, i) => {
+        const top = c.getBoundingClientRect().top;
+        const target = stacked ? navH + 20 + i * 16 : vh * 0.3;
+        return clamp((vh - top) / Math.max(vh - target, 1));
+      });
+      cards.forEach((c, i) => {
+        c.style.setProperty('--enter', easeOut(enter[i]).toFixed(4));
+        const cover = stacked && i < cards.length - 1 ? enter[i + 1] : 0;
+        c.style.setProperty('--cover', cover.toFixed(4));
+      });
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    const ro = new ResizeObserver(layout);
+    ro.observe(stackEl);
+    window.addEventListener('resize', layout, { passive: true });
+    layout();
+
+    this.cleanup.push(
+      () => window.removeEventListener('scroll', onScroll),
+      () => window.removeEventListener('resize', layout),
+      () => ro.disconnect()
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.cleanup.forEach((fn) => fn());
+  }
 }

@@ -1,0 +1,89 @@
+<div class="section container">
+  <div class="section-head center" appReveal>
+    <span class="eyebrow">What I build</span>
+    <h2 class="section-title">An <span class="grad-text">AI-native</span> full-stack developer</h2>
+    <p class="section-sub">
+      From Android &amp; iOS apps to AI features and scalable backends — I design, build and ship complete
+      products, accelerated by AI coding agents.
+    </p>
+  </div>
+
+  <div class="svc-grid">
+    <!-- Live terminal -->
+    <div class="stage-col" appReveal>
+      <div class="stage" #stage appTilt [tiltMax]="6" [tiltScale]="1" [style.--a]="current.accent" [style.--b]="current.accent2">
+        <div class="term">
+          <div class="term-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="term-title">~/projects — {{ current.tool }}</span>
+            <span class="term-badge">
+              <app-tech-logo [name]="toolLogo" [size]="13"></app-tech-logo>
+              {{ current.tool }}
+            </span>
+          </div>
+
+          <div class="term-body" aria-live="polite">
+            <p class="cmd">
+              <span class="ps">➜</span><span class="dir">~/app</span><span class="typed">{{ typedPrompt }}</span><span class="cursor" *ngIf="!done"></span>
+            </p>
+            <p
+              class="line"
+              *ngFor="let l of current.lines; let k = index"
+              [class.show]="k < shown"
+              [class.ok]="l.kind === 'ok'"
+            >
+              <span class="mark">{{ l.kind === 'ok' ? '✓' : '›' }}</span>{{ l.text }}
+            </p>
+            <p class="result" [class.show]="done">
+              <i class="fas fa-circle-check"></i>{{ current.result }}
+            </p>
+          </div>
+
+          <div class="term-glow" aria-hidden="true"></div>
+        </div>
+
+        <span class="orb o{{ j }}" *ngFor="let t of current.stack; let j = index" [attr.title]="t">
+          <app-tech-logo [name]="t" [size]="24"></app-tech-logo>
+        </span>
+      </div>
+
+      <div class="ai-strip">
+        <span class="ai-label"><i class="fas fa-bolt"></i> Shipping faster with</span>
+        <span class="ai-tool" *ngFor="let t of aiTools">
+          <app-tech-logo [name]="t" [size]="15"></app-tech-logo>{{ t }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Capability tabs (accordion) -->
+    <div class="tabs" role="tablist" aria-label="What I build">
+      <div class="tab-wrap" *ngFor="let s of services; let i = index" [style.--a]="s.accent" [style.--b]="s.accent2">
+        <button
+          class="tab fx-card"
+          role="tab"
+          appSpotlight
+          [class.active]="i === active"
+          [attr.aria-selected]="i === active"
+          (click)="select(i)"
+        >
+          <span class="tab-icon"><i [class]="s.icon"></i></span>
+          <span class="tab-text">
+            <strong>{{ s.title }}</strong>
+            <span>{{ s.short }}</span>
+          </span>
+          <i class="fas fa-chevron-down chev"></i>
+          <span class="progress" *ngIf="i === active && autoplay" [style.animation-duration.ms]="duration"></span>
+        </button>
+
+        <div class="details" *ngIf="i === active">
+          <ul>
+            <li *ngFor="let p of s.points"><i class="fas fa-check"></i>{{ p }}</li>
+          </ul>
+          <div class="chips">
+            <span class="chip" *ngFor="let t of s.stack"><app-tech-logo [name]="t"></app-tech-logo>{{ t }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
